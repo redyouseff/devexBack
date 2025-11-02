@@ -7,6 +7,7 @@ const path = require("path");
 const { cloudinaryUploadImage } = require("../utilts/cloudinary");
 
 const fs = require("fs");
+const apiError = require("../utilts/apiError");
 
 
 
@@ -18,7 +19,7 @@ const uploadImages=uploadMixedImges([{
 const resizeImage=asyncHandler(async(req,res,next)=>{
    
 
-    if(req.files.images){
+    if(req.files?.images){
         req.body.images=[];
         await Promise.all(
             req.files.images.map(async(image,index)=>{
@@ -40,35 +41,38 @@ const resizeImage=asyncHandler(async(req,res,next)=>{
 })
 
 const createBlog=async(req,res,next)=>{
-    console.log(req.body.images)
+    
     
     const imagesPaths=req.body?.images?.map(image=> path.join(__dirname,"../uploads/blogs",image));
-   
+
+
+    if(req.body.images.length>0){
+           
     try{
         const result =await Promise.all(imagesPaths.map(image=>cloudinaryUploadImage(image)));
         req.body.images=result.map(image=>({secure_url:image.secure_url,public_id:image.public_id}));
        
     }
     catch(err){
-        return next(new appError(`${err.message} there is an error on uploading images on the cloudinary`,404))
+        return next(new apiError(`${err.message} there is an error on uploading images on the cloudinary`,404))
     }
 
+    }
    
  
 
     const blog=await blogModel.create(req.body);
 
     
-    
-     
+    imagesPaths.map((image)=>{
+        fs.unlinkSync(image)
+    });
+
         
     res.status(200).json({
         data:blog,
     })
 
-    imagesPaths.map((image)=>{
-        fs.unlinkSync(image)
-    });
 
 }
 
@@ -82,7 +86,7 @@ const getBlogs=async(req,res,next)=>{
 const getBlogById=async(req,res,next)=>{
     const blog=await blogModel.findById(req.params.id);
     if(!blog){{
-        return next(new appError(`ther is no blog with this id ${req.params.id}`,404))
+        return next(new apiError(`ther is no blog with this id ${req.params.id}`,404))
     }
  
 }
@@ -97,7 +101,7 @@ const  updateBlog=async(req,res,next)=>{
     const id =req.params.id;
     const blog=await blogModel.findByIdAndUpdate(id,req.body,{new:true,runValidators:true});
     if(!blog){
-        return next(new appError(`ther is no blog with this id ${id}`,404))
+        return next(new apiError(`ther is no blog with this id ${id}`,404))
     }
     res.status(200).json({
         data:blog,
@@ -108,7 +112,7 @@ const deleteBlog=async(req,res,next)=>{
     const id =req.params.id;
     const blog=await blogModel.findByIdAndDelete(id);
     if(!blog){
-        return next(new appError(`ther is no blog with this id ${id}`,404))
+        return next(new apiError(`ther is no blog with this id ${id}`,404))
     }
     res.status(200).json({
        message:`blog was deleted by this id ${req.params.id}`

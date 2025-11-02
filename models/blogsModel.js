@@ -13,6 +13,7 @@ const blogSchema=new mongoose.Schema({
     }],
     sectionTwo:{
         typeOfH:String,
+        title:String,
         paragraph1:String,
         ul:[String],
     },
@@ -20,6 +21,7 @@ const blogSchema=new mongoose.Schema({
   
     sectionThree:{
         typeOfH:String,
+        title:String,
         paragraph1:String,
         ol:[String],
     },
@@ -30,6 +32,7 @@ const blogSchema=new mongoose.Schema({
     },
     sectionFive:{
         typeofH:String,
+        title:String,
         paragraph1:String,
         paragraph2:String,
        
