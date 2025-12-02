@@ -35,9 +35,9 @@ const login=asyncHandler(async(req,res,next)=>{
 
     res.status(200).json({
 
-        email:user.email,
+       data: { email:user.email,
         name:user.name,
-        role:user.role,
+        role:user.role,},
 
         token:token   
 
