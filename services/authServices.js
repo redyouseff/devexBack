@@ -9,6 +9,7 @@ let jwt =require("jsonwebtoken")
 
 
 
+
 const signUp=asyncHandler(async(req,res,next)=>{
     const  user =await  userModel.create({
         name :req.body.name,
@@ -26,13 +27,20 @@ const signUp=asyncHandler(async(req,res,next)=>{
 
 const login=asyncHandler(async(req,res,next)=>{
     const user =await userModel.findOne({email:req.body.email});
-    if(!user||bcrypt.compare(req.body.password,user.password)){
-        next(new apiError("email or password is not correct "))
+  
+    if(!user||!bcrypt.compare(req.body.password,user.password)){
+       return next(new apiError("email or password is not correct "))
     }
-    const token =await createToken(user._id);
+    const token =createToken(user._id);
 
     res.status(200).json({
-        token:token
+
+        email:user.email,
+        name:user.name,
+        role:user.role,
+
+        token:token   
+
     })
    
 })
