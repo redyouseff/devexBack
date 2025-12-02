@@ -1,6 +1,6 @@
 const { check,body } = require('express-validator');
 
-validator=require('../../middleware/validator');
+const validator=require('../../middleware/validator');
 
 
 const createBlogValidator=[
