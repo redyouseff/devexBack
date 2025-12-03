@@ -81,16 +81,7 @@ const getBlogs=factory.getAll(blogModel)
 
 const getBlogById=factory.getOne(blogModel)
 
-const  updateBlog=async(req,res,next)=>{
-    const id =req.params.id;
-    const blog=await blogModel.findByIdAndUpdate(id,req.body,{new:true,runValidators:true});
-    if(!blog){
-        return next(new apiError(`ther is no blog with this id ${id}`,404))
-    }
-    res.status(200).json({
-        data:blog,
-    })
-}
+const  updateBlog=factory.updateOne(blogModel)
 
 const deleteBlog=factory.deleteOne(blogModel)
 
