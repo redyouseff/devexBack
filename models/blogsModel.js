@@ -42,5 +42,15 @@ const blogSchema=new mongoose.Schema({
 
 })
 
+blogSchema.index({
+    "sectionOne.title": "text",
+    "sectionOne.paragraph1": "text",
+    "sectionOne.paragraph2":"text",
+    "sectionTwo.title": "text",
+    "sectionTwo.paragraph1": "text",
+    "sectionThree.title": "text",
+    "sectionThree.paragraph1": "text",
+})
+
 const blogModel= new mongoose.model("Blogs",blogSchema);
 module.exports=blogModel;

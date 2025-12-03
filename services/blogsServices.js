@@ -8,6 +8,7 @@ const { cloudinaryUploadImage } = require("../utilts/cloudinary");
 
 const fs = require("fs");
 const apiError = require("../utilts/apiError");
+const factory = require("./handlersFactory");
 
 
 
@@ -76,26 +77,9 @@ const createBlog=async(req,res,next)=>{
 
 }
 
-const getBlogs=async(req,res,next)=>{
-    const blogs=await blogModel.find();
-    res.status(200).json({
-        data:blogs,
-    })
-}
+const getBlogs=factory.getAll(blogModel)
 
-const getBlogById=async(req,res,next)=>{
-    const blog=await blogModel.findById(req.params.id);
-    if(!blog){{
-        return next(new apiError(`ther is no blog with this id ${req.params.id}`,404))
-    }
- 
-}
-
-res.status(200).json({
-   data:blog,
-})
-
-}
+const getBlogById=factory.getOne(blogModel)
 
 const  updateBlog=async(req,res,next)=>{
     const id =req.params.id;
@@ -108,16 +92,7 @@ const  updateBlog=async(req,res,next)=>{
     })
 }
 
-const deleteBlog=async(req,res,next)=>{
-    const id =req.params.id;
-    const blog=await blogModel.findByIdAndDelete(id);
-    if(!blog){
-        return next(new apiError(`ther is no blog with this id ${id}`,404))
-    }
-    res.status(200).json({
-       message:`blog was deleted by this id ${req.params.id}`
-    })
-}
+const deleteBlog=factory.deleteOne(blogModel)
 
 
 
