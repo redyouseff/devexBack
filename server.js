@@ -1,6 +1,6 @@
 const express = require("express");
 const dotenv=require("dotenv");
-dotenv.config({path:"./config.env"});
+dotenv.config({ path: `${__dirname}/config.env` });
 
 const globleError=require("./middleware/globleError");
 const compression = require('compression')
