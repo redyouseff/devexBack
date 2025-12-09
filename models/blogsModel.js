@@ -16,6 +16,7 @@ const blogSchema=new mongoose.Schema({
         title:String,
         paragraph1:String,
         ul:[String],
+        paragraphs:[String] 
     },
    
   
@@ -24,19 +25,26 @@ const blogSchema=new mongoose.Schema({
         title:String,
         paragraph1:String,
         ol:[String],
+        paragraphs:[String] 
     },
     sectionFour:{
         typeofH:String,
         paragraph1:String,
         ul:[String],
+        paragraphs:[String] 
     },
     sectionFive:{
         typeofH:String,
         title:String,
         paragraph1:String,
-        paragraph2:String,
+        ul:[String],
+        paragraphs:[String] 
        
     },  
+    title:String,
+    description:String,
+    keywords:String,
+    canonical:String
 
   
 
