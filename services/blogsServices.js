@@ -47,7 +47,7 @@ const createBlog=async(req,res,next)=>{
     const imagesPaths=req.body?.images?.map(image=> path.join(__dirname,"../uploads/blogs",image));
 
 
-    if(req.body.images.length>0){
+    if(req.body?.images?.length>0){
            
     try{
         const result =await Promise.all(imagesPaths.map(image=>cloudinaryUploadImage(image)));
@@ -71,6 +71,7 @@ const createBlog=async(req,res,next)=>{
 
         
     res.status(200).json({
+        
         data:blog,
     })
 
