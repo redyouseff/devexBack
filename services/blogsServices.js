@@ -43,7 +43,7 @@ const resizeImage=asyncHandler(async(req,res,next)=>{
 })
 
 const createBlog=async(req,res,next)=>{
-    
+   
     
     const imagesPaths=req.body?.images?.map(image=> path.join(__dirname,"../uploads/blogs",image));
 
@@ -66,6 +66,7 @@ const createBlog=async(req,res,next)=>{
  
 
     const blog=await blogModel.create(req.body);
+    console.log(blog)
 
     
    if (imagesPaths?.length > 0) {
