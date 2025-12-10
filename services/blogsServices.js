@@ -9,6 +9,7 @@ const { cloudinaryUploadImage } = require("../utilts/cloudinary");
 const fs = require("fs");
 const apiError = require("../utilts/apiError");
 const factory = require("./handlersFactory");
+const { body } = require("express-validator");
 
 
 
@@ -46,6 +47,8 @@ const createBlog=async(req,res,next)=>{
     
     const imagesPaths=req.body?.images?.map(image=> path.join(__dirname,"../uploads/blogs",image));
 
+    req.body.images=req.body.images|| [] ;
+
 
     if(req.body?.images?.length>0){
            
@@ -65,9 +68,11 @@ const createBlog=async(req,res,next)=>{
     const blog=await blogModel.create(req.body);
 
     
-    imagesPaths.map((image)=>{
-        fs.unlinkSync(image)
+   if (imagesPaths?.length > 0) {
+    imagesPaths.forEach(image => {
+        if (fs.existsSync(image)) fs.unlinkSync(image);
     });
+}
 
         
     res.status(200).json({
