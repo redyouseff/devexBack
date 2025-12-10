@@ -12,6 +12,7 @@ const globleError=(err,req,res,next)=>{
     }
 
     else{
+        
         if(err.name=="JsonWebTokenError") err=handleInvalidSignature();
         if(err.name=="TokenExpiredError") err=new apiError("Token expired",401);
 

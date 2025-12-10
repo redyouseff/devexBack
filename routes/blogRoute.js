@@ -6,7 +6,7 @@ const { protect,allowedTo } = require("../services/authServices");
 
 
 
-router.route("/").post(protect,allowedTo("admin"),uploadImages,resizeImage,createBlogValidator,createBlog)
+router.route("/").post(protect,allowedTo("admin"),uploadImages,resizeImage,createBlog)
 router.route("/").get(protect,allowedTo("admin"),getBlogs)
 router.route("/:id").get(protect,allowedTo("admin"),getOneBlogValidator,getBlogById);
 router.route("/:id").patch(protect,allowedTo("admin"),updateBlogValidator,updateBlog);
