@@ -23,6 +23,7 @@ const uploadSingleImage=(fileName)=>{
 }
 
 const uploadMixedImges=(arrayOfFields)=>{
+   
     return multerOptions().fields(arrayOfFields);
 }
 

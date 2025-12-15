@@ -21,14 +21,15 @@ const { Result } = require('express-validator');
  const updateOne=(model)=>{
     return asyncHandler(async(req,res,next)=>{
         try{
+            console.log(req.body.images,"jjjj")
 
-            const document=await model.findByIdAndUpdate(req.params.id,req.body,
-                {new:true},)
+            // const document=await model.findByIdAndUpdate(req.params.id,req.body,
+            //     {new:true},)
 
-                document.save();
-                res.status(200).json({
-                    data:document
-                })
+            //     document.save();
+            //     res.status(200).json({
+            //         data:document
+            //     })
 
         }
         catch{

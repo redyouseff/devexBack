@@ -10,6 +10,7 @@ const blogSchema=new mongoose.Schema({
     images:[{
         secure_url:String,
         public_id:String,
+        slot:Number,
     }],
     sectionTwo:{
         typeOfH:String,
