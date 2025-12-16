@@ -11,7 +11,11 @@ const blogSchema=new mongoose.Schema({
         secure_url:String,
         public_id:String,
         slot:Number,
+     
     }],
+    altImageOne:String,
+    altImagTwo:String,
+    altImageThree:String,
     sectionTwo:{
         typeOfH:String,
         title:String,
@@ -19,8 +23,7 @@ const blogSchema=new mongoose.Schema({
         ul:[String],
         paragraphs:[String] 
     },
-   
-  
+     
     sectionThree:{
         typeOfH:String,
         title:String,
@@ -42,6 +45,33 @@ const blogSchema=new mongoose.Schema({
         paragraphs:[String] 
        
     },  
+
+    sectionSix:{
+         typeofH:String,
+        title:String,
+        paragraph1:String,
+        ul:[String],
+        paragraphs:[String] 
+
+    },
+    sectionSeven:{
+         typeofH:String,
+        title:String,
+        paragraph1:String,
+        ul:[String],
+        paragraphs:[String] 
+    },
+    sectionEight:{
+         typeofH:String,
+        title:String,
+        paragraph1:String,
+        ul:[String],
+        paragraphs:[String] 
+
+    },
+    data:Date,
+
+
     title:String,
     description:String,
     keywords:String,
@@ -49,9 +79,13 @@ const blogSchema=new mongoose.Schema({
 
   
 
-})
+},{timestamps:true})
+
+
+
 
 blogSchema.index({
+
     "sectionOne.title": "text",
     "sectionOne.paragraph1": "text",
     "sectionOne.paragraph2":"text",

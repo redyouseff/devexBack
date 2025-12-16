@@ -28,7 +28,7 @@ const signUp=asyncHandler(async(req,res,next)=>{
 
 const login=asyncHandler(async(req,res,next)=>{
     const user =await userModel.findOne({email:req.body.email});
-    console.log(user)
+  
   
     if(!user||! await bcrypt.compare(req.body.password,user.password)){
        
