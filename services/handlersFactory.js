@@ -23,14 +23,6 @@ const { Result } = require('express-validator');
         try{
             console.log(req.body.images,"jjjj")
 
-            // const document=await model.findByIdAndUpdate(req.params.id,req.body,
-            //     {new:true},)
-
-            //     document.save();
-            //     res.status(200).json({
-            //         data:document
-            //     })
-
         }
         catch{
             return next(new apiError(`not found document with this id ${req.params.id}`));
@@ -72,6 +64,7 @@ const { Result } = require('express-validator');
 
  const getAll=(model)=>{
     return asyncHandler(async(req,res,next)=>{
+       
         let filter={};
         if(req.filterObj){
             filter=req.filterObj;
@@ -91,6 +84,7 @@ const { Result } = require('express-validator');
        
 
         const result =await mongooseQuery;
+     
         res.status(200).json({
             pagination:paginationResult,
             length:result.length,

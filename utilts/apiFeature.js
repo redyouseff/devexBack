@@ -15,10 +15,28 @@ class apiFeatures {
             delete queryString[field]
         })
 
+        if(queryString?.posted=='true'){
+            queryString.posted=true
+
+        }else if(queryString?.posted=='false'){
+             queryString.posted=false
+
+        }
+        else{
+            delete queryString.posted;
+           
+        }
+
+        
+        
+       
+
          queryString=JSON.stringify(queryString);
+         
          queryString=queryString.replace(/\b(gte|gt|lt|lte)\b/g,(match)=>`$${match}`)
           
          this.mongooseQuery=this.mongooseQuery.find(JSON.parse(queryString))
+         
       
          return this
     }

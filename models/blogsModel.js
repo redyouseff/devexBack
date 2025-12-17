@@ -35,7 +35,7 @@ const blogSchema=new mongoose.Schema({
         typeofH:String,
         paragraph1:String,
         ul:[String],
-        paragraphs:[String] 
+        paragraphs:[String]
     },
     sectionFive:{
         typeofH:String,
@@ -59,7 +59,7 @@ const blogSchema=new mongoose.Schema({
         title:String,
         paragraph1:String,
         ul:[String],
-        paragraphs:[String] 
+        paragraphs:[String]
     },
     sectionEight:{
          typeofH:String,
@@ -70,6 +70,10 @@ const blogSchema=new mongoose.Schema({
 
     },
     data:Date,
+    posted:{
+        type:Boolean,
+        default:true
+    },
 
 
     title:String,
@@ -94,6 +98,7 @@ blogSchema.index({
     "sectionThree.title": "text",
     "sectionThree.paragraph1": "text",
 })
+
 
 const blogModel= new mongoose.model("Blogs",blogSchema);
 module.exports=blogModel;
