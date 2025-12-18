@@ -13,9 +13,15 @@ const blogSchema=new mongoose.Schema({
         slot:Number,
      
     }],
+
+    
     altImageOne:String,
     altImagTwo:String,
     altImageThree:String,
+    linkOne:String,
+    linkTwo:String,
+    linkThree:String,
+
     sectionTwo:{
         typeOfH:String,
         title:String,
