@@ -106,93 +106,115 @@ const createBlog=async(req,res,next)=>{
 }
 
 
-const  updateBlog=asyncHandler(async(req,res,next)=>{
+    const  updateBlog=asyncHandler(async(req,res,next)=>{
 
-     const blog=await blogModel.findById(req.params.id)
-    
-     
-   if (!blog) {
-      return next(new apiError("Blog not found", 404));
-   }
-
-   
-         let imagesPaths=[]
+        const blog=await blogModel.findById(req.params.id)
         
-          
-    if(req?.processedImages?.length>0){
+        
+    if (!blog) {
+        return next(new apiError("Blog not found", 404));
+    }
 
-        const oldImagesToRemove = [];
-     
-         for(const image of req.processedImages){
-            imagesPaths.push(path.join(__dirname,"../uploads/blogs",image.fileName))
-          
-             const oldImage=blog.images.find(i => i.slot==image.slot);
-             if(oldImage){
-
-                // await cloudinaryRemoveImage(oldImage.public_id);
-                oldImagesToRemove.push(oldImage);
-                blog.images = blog.images.filter(i => i.slot !== image.slot);
-
-             }
-
-         }
-        await Promise.all(
-            oldImagesToRemove.map(image=>{
-                cloudinaryRemoveImage(image.public_id)
-            })
-         )
-       
-
-        try{
-
-            const result=await Promise.all(imagesPaths.map(image=>cloudinaryUploadImage(image)));
-            req.processedImages=result.map((image,index)=>({secure_url:image.secure_url,public_id:image.public_id,slot:req.processedImages[index].slot}));
+    
+            let imagesPaths=[]
             
             
-             
-        }
-      
-           catch(err){
+        if(req?.processedImages?.length>0){
 
-                return next(new apiError(`${err.message} there is an error on uploading images on the cloudinary`,404))
+            const oldImagesToRemove = [];
+        
+            for(const image of req.processedImages){
+                imagesPaths.push(path.join(__dirname,"../uploads/blogs",image.fileName))
             
+                const oldImage=blog.images.find(i => i.slot==image.slot);
+                if(oldImage){
+
+                    // await cloudinaryRemoveImage(oldImage.public_id);
+                    oldImagesToRemove.push(oldImage);
+                    blog.images = blog.images.filter(i => i.slot !== image.slot);
+
+                }
+
             }
+            await Promise.all(
+                oldImagesToRemove.map(image=>{
+                    cloudinaryRemoveImage(image.public_id)
+                })
+            )
+        
+
+            try{
+
+                const result=await Promise.all(imagesPaths.map(image=>cloudinaryUploadImage(image)));
+                console.log(result)
+                req.processedImages=result.map((image,index)=>({secure_url:image.secure_url,public_id:image.public_id,slot:req.processedImages[index].slot}));
+                
+                
+                
+                
+            }
+        
+            catch(err){
+
+                    return next(new apiError(`${err.message} there is an error on uploading images on the cloudinary`,404))
+                
+                }
 
 
+        }
+        
+
+        const {images,...rest}=req.body
+        
+    
+        
+    
+    Object.assign(blog,rest);
+    if(req?.processedImages?.length>0){
+        blog.images.push(...req.processedImages);
     }
 
-    const {images,...rest}=req.body
-   
-     
-   
-   Object.assign(blog,rest);
-   if(req?.processedImages?.length>0){
-    blog.images.push(...req.processedImages);
-   }
+        await blog.save();
 
-    await blog.save();
+    
 
-  
+        if(imagesPaths?.length>0){
+            imagesPaths.forEach((image)=>{
+                if(fs.existsSync(image))  fs.unlinkSync(image)
 
-    if(imagesPaths?.length>0){
-        imagesPaths.forEach((image)=>{
-            if(fs.existsSync(image))  fs.unlinkSync(image)
+            })
 
+        }
+
+        res.status(200).json({
+            status:"success",
+            data:blog
         })
+    })
 
-    }
+const getBlogByCanonical=asyncHandler(async(req,res,next)=>{
+    const canonical =req.params.canonical;
+    const blog =await blogModel.findOne({canonical});
+    if(!blog){
+        return next (new apiError(`blog not found with this canonical ${canonical}`,404))
+    };
 
     res.status(200).json({
         status:"success",
         data:blog
     })
+
+
 })
+
+
 
 
 
 const getBlogs=factory.getAll(blogModel)
 
 const getBlogById=factory.getOne(blogModel)
+
 
 
 
@@ -203,4 +225,4 @@ const deleteBlog=factory.deleteOne(blogModel)
 
 
 
-module.exports={uploadImages,resizeImage,createBlog,getBlogs,getBlogById,updateBlog,deleteBlog}   
+module.exports={uploadImages,resizeImage,createBlog,getBlogs,getBlogById,updateBlog,deleteBlog,getBlogByCanonical}   

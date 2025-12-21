@@ -16,16 +16,19 @@ const blogSchema=new mongoose.Schema({
 
     
     altImageOne:String,
-    altImagTwo:String,
+    altImageTwo:String,
     altImageThree:String,
     linkOne:String,
+    linkOneParagraph:String,
     linkTwo:String,
+    linkTwoParagraph:String,
     linkThree:String,
+    linkThreeParagraph:String,
 
     sectionTwo:{
         typeOfH:String,
         title:String,
-        paragraph1:String,
+        paragraph1:String,              
         ul:[String],
         paragraphs:[String] 
     },
@@ -38,6 +41,7 @@ const blogSchema=new mongoose.Schema({
         paragraphs:[String] 
     },
     sectionFour:{
+        title:String,
         typeofH:String,
         paragraph1:String,
         ul:[String],
@@ -85,7 +89,11 @@ const blogSchema=new mongoose.Schema({
     title:String,
     description:String,
     keywords:String,
-    canonical:String
+    canonical:{
+        type:String,
+        unique:true,
+    }
+    
 
   
 
